@@ -10,8 +10,7 @@ RUN dnf update -y && \
     dnf install -y \
     libicu \
     wget \
-    tar \
-    htop
+    tar
 
 RUN dnf update -y && \
     dnf install -y \
@@ -35,10 +34,14 @@ RUN tar -xzf actions-runner-linux-x64-2.325.0.tar.gz -C /cicd && \
 RUN adduser -m cicduser && \
     chown -R cicduser:cicduser /cicd
 
+RUN chmod +x /cicd/run-cicd.sh
+
 RUN echo 'export PATH=$PATH:/usr/local/share/dotnet' >> /home/cicduser/.bashrc
 RUN echo 'export PATH=$PATH:/usr/local/share/powershell' >> /home/cicduser/.bashrc
 
 USER cicduser
+ENV PATH="$PATH:/usr/local/share/dotnet:/usr/local/share/powershell"
+# RUN source ~/.bashrc
 
 # Set the default shell to bash
 CMD ["/bin/bash", "-c", "./run-cicd.sh"]

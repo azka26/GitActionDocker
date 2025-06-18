@@ -21,8 +21,8 @@ RUN dnf update -y && \
 RUN mkdir -p /usr/local/share/dotnet && \
     mkdir -p /usr/local/share/powershell
 
-RUN tar -xzf ./dotnet-runtime-8.0.16-linux-x64.tar.gz -C /usr/local/share/dotnet && \
-    rm -rf dotnet-runtime-8.0.16-linux-x64.tar.gz
+RUN tar -xzf ./dotnet-runtime-8.0.17-linux-x64.tar.gz -C /usr/local/share/dotnet && \
+    rm -rf dotnet-runtime-8.0.17-linux-x64.tar.gz
 
 RUN tar -xzf ./powershell-7.4.10-linux-x64.tar.gz -C /usr/local/share/powershell && \
     rm -rf powershell-7.4.10-linux-x64.tar.gz

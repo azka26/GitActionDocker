@@ -2,6 +2,7 @@
 FROM rockylinux:9.3
 
 WORKDIR /cicd
+VOLUME /cicd/runner
 COPY /required-files/ .
 COPY ./run-cicd.sh .
 RUN chmod +x run-cicd.sh
@@ -20,16 +21,16 @@ RUN dnf update -y && \
 RUN mkdir -p /usr/local/share/dotnet && \
     mkdir -p /usr/local/share/powershell
 
-RUN tar -xzf ./dotnet-runtime-8.0.17-linux-x64.tar.gz -C /usr/local/share/dotnet && \
-    rm -rf dotnet-runtime-8.0.17-linux-x64.tar.gz
+RUN tar -xzf ./dotnet-runtime.tar.gz -C /usr/local/share/dotnet && \
+    rm -rf dotnet-runtime.tar.gz
 
-RUN tar -xzf ./powershell-7.4.10-linux-x64.tar.gz -C /usr/local/share/powershell && \
-    rm -rf powershell-7.4.10-linux-x64.tar.gz
+RUN tar -xzf ./powershell.tar.gz -C /usr/local/share/powershell && \
+    rm -rf powershell.tar.gz
 
 RUN chmod +x /usr/local/share/powershell/pwsh
 
-RUN tar -xzf actions-runner-linux-x64-2.325.0.tar.gz -C /cicd && \
-    rm -rf actions-runner-linux-x64-2.325.0.tar.gz
+# RUN tar -xzf actions-runner.tar.gz -C /cicd && \
+#     rm -rf actions-runner.tar.gz
 
 RUN adduser -m cicduser && \
     chown -R cicduser:cicduser /cicd
@@ -42,6 +43,8 @@ RUN echo 'export PATH=$PATH:/usr/local/share/powershell' >> /home/cicduser/.bash
 USER cicduser
 ENV PATH="$PATH:/usr/local/share/dotnet:/usr/local/share/powershell"
 # RUN source ~/.bashrc
+
+
 
 # Set the default shell to bash
 CMD ["/bin/bash", "-c", "./run-cicd.sh"]
